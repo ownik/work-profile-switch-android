@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Signature|privileged permission: only usable once granted via
+         `adb shell pm grant ... android.permission.MODIFY_QUIET_MODE`
+         or a Shizuku-mediated grant. Declaring it here does NOT get it
+         approved by Google Play review dialogs automatically — Android
+         will silently deny calls until granted out-of-band. -->
+    <uses-permission
+        android:name="android.permission.MODIFY_QUIET_MODE"
+        tools:ignore="ProtectedPermissions" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.WorkProfileSwitch">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.WorkProfileSwitch"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Registers static shortcuts (on/off) so they show up in the
+                 long-press app menu and are pickable from Bixby Routines. -->
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+
+        <!-- Headless activity the shortcuts/Routines actually invoke.
+             It performs the toggle and finishes immediately — no UI shown,
+             so it works cleanly as a scheduled Routine action. -->
+        <activity
+            android:name=".ToggleActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+    </application>
+
+</manifest>

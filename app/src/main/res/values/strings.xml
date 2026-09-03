@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Work Profile Switch</string>
+
+    <string name="shortcut_enable_short">Enable profile</string>
+    <string name="shortcut_enable_long">Enable work profile</string>
+    <string name="shortcut_disable_short">Disable profile</string>
+    <string name="shortcut_disable_long">Disable work profile</string>
+
+    <string name="grant_permission_guide"><![CDATA[<p><b>Option A - ADB (from a computer):</b></p>
+1. Enable Developer options and USB debugging on this phone.<br>
+2. Connect the phone to a computer and install platform-tools (adb).<br>
+3. Run:<br>
+<p><i>   adb shell pm grant {appId} android.permission.MODIFY_QUIET_MODE</i></p>
+4. Reopen this app - the status below should switch to "granted".
+<br><br>
+<p><b>Option B - Shizuku (no computer needed after first setup):</b></p>
+1. Install Shizuku from the Play Store.<br>
+2. Start it via "Wireless debugging" (Android 11+, Developer options),
+   no computer required.<br>
+3. Install a Shizuku permission helper, or use the Shizuku app itself to
+   grant the requested permission to this app when prompted.<br>
+4. Reopen this app to confirm the status below updates to "granted"."]]>
+    </string>
+</resources>

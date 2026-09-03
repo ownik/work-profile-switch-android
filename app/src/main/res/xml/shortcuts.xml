@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_toggle_on"
+        android:shortcutId="enable_work_profile"
+        android:shortcutLongLabel="@string/shortcut_enable_long"
+        android:shortcutShortLabel="@string/shortcut_enable_short">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.ownik.workprofileswitch.ToggleActivity"
+            android:targetPackage="com.ownik.workprofileswitch">
+            <extra
+                android:name="quiet_mode_enabled"
+                android:value="0" />
+        </intent>
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_toggle_off"
+        android:shortcutId="disable_work_profile"
+        android:shortcutLongLabel="@string/shortcut_disable_long"
+        android:shortcutShortLabel="@string/shortcut_disable_short">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.ownik.workprofileswitch.ToggleActivity"
+            android:targetPackage="com.ownik.workprofileswitch">
+            <extra
+                android:name="quiet_mode_enabled"
+                android:value="1" />
+        </intent>
+    </shortcut>
+
+</shortcuts>
