@@ -22,4 +22,6 @@
    grant the requested permission to this app when prompted.<br>
 4. Reopen this app to confirm the status below updates to "granted"."]]>
     </string>
+
+    <string name="github_url">https://github.com/ownik/WorkProfileSwitch</string>
 </resources>

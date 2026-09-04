@@ -17,6 +17,20 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "GIT_COMMIT",
+            "\"${
+                providers.exec {
+                    commandLine("git", "rev-parse", "--short", "HEAD")
+                }.standardOutput.asText.get().trim()
+            }\""
+        )
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
