@@ -1,6 +1,6 @@
 package com.ownik.workprofileswitch
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,9 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Error
-import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -21,26 +20,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ownik.workprofileswitch.ui.theme.Failure
-import com.ownik.workprofileswitch.ui.theme.Success
 import com.ownik.workprofileswitch.ui.theme.WorkProfileSwitchTheme
 
 @Composable
 fun PermissionCard(
-    hasPermission: Boolean,
-    onHowToGrantClick: () -> Unit
+    onHowToGrantClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val color = if (hasPermission) {
-        Success
-    } else {
-        Failure
-    }
-
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = color.copy(alpha = 0.4f)
-        )
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.error)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -50,12 +42,12 @@ fun PermissionCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = Icons.Default.Key,
+                    imageVector = Icons.Default.Lock,
                     contentDescription = null,
                     modifier = Modifier
                         .size(44.dp)
                         .padding(8.dp),
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.error
                 )
 
                 Spacer(modifier = Modifier.size(12.dp))
@@ -64,44 +56,24 @@ fun PermissionCard(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = "Permission",
+                        text = "Permission needed",
                         style = MaterialTheme.typography.titleMedium
                     )
-
                     Text(
-                        text = if (hasPermission) {
-                            "Permission granted"
-                        } else {
-                            "Permission required"
-                        },
+                        text = "Work profile toggle needs this permission to switch modes",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-
-                Icon(
-                    imageVector = if (hasPermission) {
-                        Icons.Default.CheckCircle
-                    } else {
-                        Icons.Default.Error
-                    },
-                    contentDescription = null,
-                    modifier = Modifier.size(28.dp),
-                    tint = color
-                )
             }
 
-            if (!hasPermission) {
-                Spacer(modifier = Modifier.size(8.dp))
+            Spacer(modifier = Modifier.size(12.dp))
 
-                Text(
-                    text = "How to grant permission",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .padding(start = 56.dp)
-                        .clickable(onClick = onHowToGrantClick)
-                )
+            Button(
+                onClick = onHowToGrantClick,
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                Text("How to grant permission")
             }
         }
     }
@@ -112,7 +84,6 @@ fun PermissionCard(
 fun PermissionCardPreview() {
     WorkProfileSwitchTheme {
         PermissionCard(
-            hasPermission = true,
             onHowToGrantClick = {}
         )
     }
