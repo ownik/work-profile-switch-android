@@ -86,9 +86,9 @@ fun MainScreen(
                 // Current state
                 Text(
                     text = if (workProfileEnabled) {
-                        "Work profile is enabled"
+                        stringResource(R.string.work_profile_enabled)
                     } else {
-                        "Work profile is disabled"
+                        stringResource(R.string.work_profile_disabled)
                     },
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center,
@@ -99,9 +99,9 @@ fun MainScreen(
 
                 Text(
                     text = if (workProfileEnabled) {
-                        "Tap to disable"
+                        stringResource(R.string.tap_to_disable)
                     } else {
-                        "Tap to enable"
+                        stringResource(R.string.tap_to_enable)
                     },
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -164,10 +164,13 @@ fun MainScreenBottomBar() {
             }
 
             Text(
-                text = "View source on Github ",
+                text = stringResource(R.string.view_source_on_github),
                 style = textStyle,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+
+            Spacer(modifier = Modifier.padding(horizontal = 2.dp))
+
             Icon(
                 painter = painterResource(id = R.drawable.github_invertocat_black),
                 contentDescription = "",

@@ -7,6 +7,18 @@
     <string name="shortcut_disable_short">Disable profile</string>
     <string name="shortcut_disable_long">Disable work profile</string>
 
+    <string name="permission_needed">Permission needed</string>
+    <string name="permission_needed_desc">Work profile toggle needs this permission to switch modes</string>
+    <string name="how_to_grant_permission">How to grant permission</string>
+    <string name="work_profile_enabled">Work profile is enabled</string>
+    <string name="work_profile_disabled">Work profile is disabled</string>
+    <string name="tap_to_disable">Tap to disable</string>
+    <string name="tap_to_enable">Tap to enable</string>
+    <string name="permission_granted">Permission granted</string>
+    <string name="permission_revoked">Permission revoked</string>
+    <string name="view_source_on_github">View source on Github</string>
+    <string name="close">Close</string>
+
     <string name="grant_permission_guide"><![CDATA[<p><b>Option A - ADB (from a computer):</b></p>
 1. Enable Developer options and USB debugging on this phone.<br>
 2. Connect the phone to a computer and install platform-tools (adb).<br>

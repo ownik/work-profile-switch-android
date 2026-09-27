@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ownik.workprofileswitch.ui.theme.WorkProfileSwitchTheme
@@ -56,11 +57,11 @@ fun PermissionCard(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = "Permission needed",
+                        text = stringResource(R.string.permission_needed),
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
-                        text = "Work profile toggle needs this permission to switch modes",
+                        text = stringResource(R.string.permission_needed_desc),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -73,7 +74,7 @@ fun PermissionCard(
                 onClick = onHowToGrantClick,
                 modifier = Modifier.align(Alignment.End)
             ) {
-                Text("How to grant permission")
+                Text(stringResource(R.string.how_to_grant_permission))
             }
         }
     }

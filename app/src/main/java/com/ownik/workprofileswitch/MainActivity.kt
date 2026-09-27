@@ -86,9 +86,9 @@ class MainActivity : ComponentActivity() {
                         Toast.makeText(
                             this@MainActivity,
                             if (current) {
-                                "Permission granted"
+                                getString(R.string.permission_granted)
                             } else {
-                                "Permission revoked"
+                                getString(R.string.permission_revoked)
                             },
                             Toast.LENGTH_SHORT
                         ).show()

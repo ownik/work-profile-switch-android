@@ -26,7 +26,7 @@ fun PermissionGuideDialog(
         onDismissRequest = onDismiss,
 
         title = {
-            Text("How to grant permission")
+            Text(stringResource(R.string.how_to_grant_permission))
         },
 
         text = {
@@ -37,7 +37,7 @@ fun PermissionGuideDialog(
             TextButton(
                 onClick = onDismiss
             ) {
-                Text("Close")
+                Text(stringResource(R.string.close))
             }
         }
     )
