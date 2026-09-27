@@ -13,8 +13,21 @@ android {
         applicationId = "com.ownik.workprofileswitch"
         minSdk = 30
         targetSdk = 37
-        versionCode = 1
-        versionName = "1.0"
+
+        versionCode = providers.exec {
+            commandLine("git", "rev-list", "--count", "HEAD")
+            isIgnoreExitValue = true
+        }.standardOutput.asText
+            .map { it.trim().toIntOrNull() ?: 1 }
+            .get()
+
+        versionName = providers.exec {
+            commandLine("git", "describe", "--tags", "--abbrev=0")
+            isIgnoreExitValue = true
+        }.standardOutput.asText
+            .map { it.trim().removePrefix("v") }
+            .get()
+            .ifEmpty { "1.0.0" }
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
