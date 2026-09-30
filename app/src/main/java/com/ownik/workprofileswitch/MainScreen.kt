@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -40,6 +41,7 @@ private val PowerButtonHeight = 320.dp
 @Composable
 fun MainScreen(
     hasPermission: Boolean,
+    workProfileFound: Boolean,
     workProfileEnabled: Boolean,
     onToggleWorkProfile: suspend () -> Unit,
     onShowPermissionDialog: () -> Unit,
@@ -71,7 +73,7 @@ fun MainScreen(
                     .offset(y = buttonTopOffset)
             ) {
                 PowerButton(
-                    enabled = hasPermission,
+                    enabled = workProfileFound && hasPermission,
                     isOn = workProfileEnabled,
                     onClick = {
                         onToggleWorkProfile()
@@ -92,7 +94,12 @@ fun MainScreen(
                     },
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    color = if (workProfileEnabled) {
+                        MaterialTheme.colorScheme.onSurface
+                    } else {
+                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                    }
                 )
 
                 Spacer(modifier = Modifier.padding(vertical = 2.dp))
@@ -104,16 +111,27 @@ fun MainScreen(
                         stringResource(R.string.tap_to_enable)
                     },
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = if (workProfileEnabled) {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+                    },
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+
                 )
 
                 Spacer(modifier = Modifier.padding(vertical = 2.dp))
             }
 
             // Overlaid on top; appearing/disappearing never shifts PowerButton.
-            if (!hasPermission) {
+            if(!workProfileFound) {
+                WorkProfileNotFound(
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .fillMaxWidth()
+                )
+            } else if (!hasPermission) {
                 PermissionCard(
                     onHowToGrantClick = {
                         onShowPermissionDialog()
@@ -140,6 +158,7 @@ fun MainScreenBottomBar() {
                 vertical = 20.dp
             ),
         verticalArrangement = Arrangement.spacedBy(8.dp),
+
     ) {
         HorizontalDivider()
 
@@ -196,6 +215,7 @@ fun MainScreenPreview() {
     WorkProfileSwitchTheme(darkTheme = true) {
         MainScreen(
             hasPermission = false,
+            workProfileFound = false,
             workProfileEnabled = false,
             onToggleWorkProfile = {},
             onShowPermissionDialog = {},

@@ -36,4 +36,6 @@
     </string>
 
     <string name="github_url">https://github.com/ownik/WorkProfileSwitch</string>
+    <string name="work_profile_not_found">Work profile not found</string>
+    <string name="work_profile_not_found_desc">Set up a work profile to use Work Profile Switch.</string>
 </resources>

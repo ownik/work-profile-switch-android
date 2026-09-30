@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.UserHandle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,8 +27,8 @@ import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.seconds
 
 class MainActivity : ComponentActivity() {
-
     private var hasPermission by mutableStateOf(false)
+    private var workProfileHandle by mutableStateOf<UserHandle?>(null)
     private var workProfileEnabled by mutableStateOf(false)
     private var showPermissionDialog by mutableStateOf(false)
 
@@ -36,7 +37,9 @@ class MainActivity : ComponentActivity() {
     // reflects it immediately, without waiting for onResume.
     private val quietModeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            workProfileEnabled = !WorkProfileHelper.getQuietMode(this@MainActivity)
+            workProfileEnabled = workProfileHandle?.let {
+                !WorkProfileHelper.getQuietMode(this@MainActivity, it)
+            } ?: false
         }
     }
 
@@ -51,6 +54,7 @@ class MainActivity : ComponentActivity() {
                 Surface {
                     MainScreen(
                         hasPermission = hasPermission,
+                        workProfileFound = workProfileHandle != null,
                         workProfileEnabled = workProfileEnabled,
                         onToggleWorkProfile = {
                             toggleWorkProfile()
@@ -82,7 +86,10 @@ class MainActivity : ComponentActivity() {
                     if (current != lastKnownPermission) {
                         lastKnownPermission = current
                         hasPermission = current
-                        workProfileEnabled = !WorkProfileHelper.getQuietMode(this@MainActivity)
+                        workProfileHandle = WorkProfileHelper.findWorkProfileHandle(this@MainActivity)
+                        workProfileEnabled = workProfileHandle?.let {
+                            !WorkProfileHelper.getQuietMode(this@MainActivity, it)
+                        } ?: false
                         Toast.makeText(
                             this@MainActivity,
                             if (current) {
@@ -124,7 +131,10 @@ class MainActivity : ComponentActivity() {
 
     private fun updateState() {
         hasPermission = checkQuietModePermission()
-        workProfileEnabled = !WorkProfileHelper.getQuietMode(this)
+        workProfileHandle = WorkProfileHelper.findWorkProfileHandle(this)
+        workProfileEnabled = workProfileHandle?.let {
+            !WorkProfileHelper.getQuietMode(this, it)
+        } ?: false
     }
 
     private fun checkQuietModePermission(): Boolean {
@@ -135,14 +145,17 @@ class MainActivity : ComponentActivity() {
     }
 
     private suspend fun toggleWorkProfile() {
-        val newState = !workProfileEnabled
-        withContext(Dispatchers.IO) {
-            WorkProfileHelper.setQuietMode(
-                this@MainActivity,
-                quietModeEnabled = !newState
-            )
+        workProfileHandle?.let {
+            val newState = !workProfileEnabled
+            withContext(Dispatchers.IO) {
+                WorkProfileHelper.setQuietMode(
+                    this@MainActivity,
+                    workProfileHandle = it,
+                    quietModeEnabled = !newState
+                )
+            }
+            workProfileEnabled = newState
         }
-        workProfileEnabled = newState
     }
 
     private companion object {

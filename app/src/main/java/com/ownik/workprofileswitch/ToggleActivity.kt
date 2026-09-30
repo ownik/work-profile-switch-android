@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.widget.Toast
 
 /**
  * No layout, translucent theme (see manifest) — this exists purely so
@@ -17,7 +18,7 @@ import android.content.IntentFilter
 class ToggleActivity : Activity() {
     private val userPresentReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            WorkProfileHelper.setQuietMode(applicationContext, false)
+            setQuietMode(false)
             finish()
         }
     }
@@ -34,9 +35,18 @@ class ToggleActivity : Activity() {
             registerReceiver(userPresentReceiver, IntentFilter(Intent.ACTION_USER_PRESENT))
         } else {
             // otherwise disable/enable quiet mode directly
-            WorkProfileHelper.setQuietMode(applicationContext, quietModeEnabled)
+            setQuietMode(quietModeEnabled)
             finish()
         }
+    }
+
+    private fun setQuietMode(quietModeEnabled: Boolean) {
+        val workProfileHandle = WorkProfileHelper.findWorkProfileHandle(this)
+        if (workProfileHandle == null) {
+            Toast.makeText(applicationContext, "No work profile found", Toast.LENGTH_LONG).show()
+            return
+        }
+        WorkProfileHelper.setQuietMode(applicationContext, workProfileHandle, quietModeEnabled)
     }
 
     override fun onDestroy() {

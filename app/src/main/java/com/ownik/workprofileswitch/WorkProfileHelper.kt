@@ -23,7 +23,7 @@ object WorkProfileHelper {
      * runtime permission dialog to fall back on, since this is a
      * signature|privileged permission, not a dangerous one.
      */
-    fun setQuietMode(context: Context, quietModeEnabled: Boolean) {
+    fun setQuietMode(context: Context, workProfileHandle: UserHandle, quietModeEnabled: Boolean) {
         if (ContextCompat.checkSelfPermission(
                 context, "android.permission.MODIFY_QUIET_MODE"
             ) != PackageManager.PERMISSION_GRANTED
@@ -37,13 +37,6 @@ object WorkProfileHelper {
         }
 
         val userManager = context.getSystemService(Context.USER_SERVICE) as UserManager
-
-        val workProfileHandle = findWorkProfileHandle(userManager)
-        if (workProfileHandle == null) {
-            Log.w(TAG, "No work profile found on this device")
-            Toast.makeText(context, "No work profile found", Toast.LENGTH_LONG).show()
-            return
-        }
 
         try {
             val ok = userManager.requestQuietModeEnabled(quietModeEnabled, workProfileHandle)
@@ -60,16 +53,8 @@ object WorkProfileHelper {
     /**
      * Get the work profile's quiet mode state.
      */
-    fun getQuietMode(context: Context): Boolean {
+    fun getQuietMode(context: Context, workProfileHandle: UserHandle): Boolean {
         val userManager = context.getSystemService(Context.USER_SERVICE) as UserManager
-
-        val workProfileHandle = findWorkProfileHandle(userManager)
-        if (workProfileHandle == null) {
-            Log.w(TAG, "No work profile found on this device")
-            Toast.makeText(context, "No work profile found", Toast.LENGTH_LONG).show()
-            return false
-        }
-
         return userManager.isQuietModeEnabled(workProfileHandle)
     }
 
@@ -79,7 +64,8 @@ object WorkProfileHelper {
      * user group (personal + any work profiles); we pick the one that
      * isn't our own handle.
      */
-    private fun findWorkProfileHandle(userManager: UserManager): UserHandle? {
+     fun findWorkProfileHandle(context: Context): UserHandle? {
+        val userManager = context.getSystemService(Context.USER_SERVICE) as UserManager
         val myHandle = android.os.Process.myUserHandle()
         return userManager.userProfiles.firstOrNull { it != myHandle }
     }
