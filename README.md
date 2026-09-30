@@ -35,8 +35,3 @@ around this, it's an Android security restriction (work-profile storage is
 encrypted and only decryptable after unlock). So "enable" routines effectively
 mean "enable as soon as you next unlock your phone" rather than at the exact
 scheduled time. Disabling isn't affected and runs on schedule normally.
-
-## Disclaimer
-
-Relies on a privileged permission not meant for third-party apps — can't ship
-on the Play Store as-is, and needs the manual grant above. Use at your own risk.
