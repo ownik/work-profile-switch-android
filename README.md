@@ -1,4 +1,11 @@
+![GitHub Release](https://img.shields.io/github/v/release/ownik/work-profile-switch-android)
+
 # Work Profile Switch
+
+<p align="center">
+  <img height="460" src="screenshots/main-screen.png">
+  <img height="460" src="screenshots/routines.png">
+</p>
 
 Lets you turn the **work profile** on/off from a shortcut — so **Samsung Modes
 and Routines** can do it automatically on a schedule.
@@ -6,6 +13,11 @@ and Routines** can do it automatically on a schedule.
 Samsung has a Quick Settings toggle for the work profile, but it can't
 be picked as a Routine action. This app just exposes the toggle as two app
 shortcuts (`Enable profile` / `Disable profile`) that Routines can target.
+
+<p align="center">
+  <a href="https://play.google.com/store/apps/details?id=com.ownik.workprofileswitch"><img height="70" src="https://raw.githubusercontent.com/steverichey/google-play-badge-svg/refs/heads/master/img/en_get.svg"></a>
+  <a href="https://github.com/ownik/work-profile-switch-android/releases/latest"><img height="70" src="https://raw.githubusercontent.com/rubenpgrady/get-it-on-github/refs/heads/main/get-it-on-github.png"></a>
+</p>
 
 ## Setup
 
