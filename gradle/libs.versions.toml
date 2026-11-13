@@ -10,8 +10,11 @@ kotlin = "2.4.20"
 composeBom = "2026.09.00"
 material3 = "1.4.0"
 animation = "1.12.1"
+playBilling = "9.1.0"
 
 [libraries]
+play-billing = { module = "com.android.billingclient:billing", version.ref = "playBilling" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

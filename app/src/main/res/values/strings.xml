@@ -18,6 +18,22 @@
     <string name="permission_revoked">Permission revoked</string>
     <string name="view_source_on_github">View source on Github</string>
     <string name="close">Close</string>
+    <string name="buy_developer_coffee">Buy the developer a coffee ☕</string>
+    <string name="support_description">Enjoying Work Profile Switch? You can support its development with a one-time contribution. All features remain free.</string>
+    <string name="support_small">A little support</string>
+    <string name="support_medium">A coffee for the developer</string>
+    <string name="support_large">Extra support</string>
+    <string name="support_option">%1$s · %2$s</string>
+    <string name="support_loading">Loading support options…</string>
+    <string name="support_unavailable">Support through Google Play is currently unavailable. Please try again later.</string>
+    <string name="support_error">Could not complete the purchase. Please try again.</string>
+    <string name="support_processing_error">Your payment is awaiting confirmation. Please reopen the app or tap Retry to finish processing it. Do not pay again.</string>
+    <string name="support_pending">Your payment is pending. Thank you! We will confirm your support once Google Play completes the payment.</string>
+    <string name="support_processing">Confirming your support…</string>
+    <string name="support_thanks">Thank you for supporting the developer! ❤️</string>
+    <string name="support_later">Later</string>
+    <string name="support_never">Don’t ask again</string>
+    <string name="support_retry">Retry</string>
 
     <string name="grant_permission_guide"><![CDATA[<p><b>Option A - ADB (from a computer):</b></p>
 1. Enable Developer options and USB debugging on this phone.<br>

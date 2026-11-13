@@ -12,11 +12,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.ownik.workprofileswitch.ui.theme.WorkProfileSwitchTheme
@@ -31,6 +33,10 @@ class MainActivity : ComponentActivity() {
     private var workProfileHandle by mutableStateOf<UserHandle?>(null)
     private var workProfileEnabled by mutableStateOf(false)
     private var showPermissionDialog by mutableStateOf(false)
+    private var foreground by mutableStateOf(false)
+    private val supportViewModel by lazy {
+        ViewModelProvider(this)[SupportViewModel::class.java]
+    }
 
     // Fires when the work profile's quiet mode is toggled by anything else -
     // Settings, Samsung Modes/Routines, another app, etc. - so the switch
@@ -51,6 +57,16 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             WorkProfileSwitchTheme {
+                val supportState = supportViewModel.state
+                LaunchedEffect(
+                    foreground, hasPermission, workProfileHandle, showPermissionDialog, supportState
+                ) {
+                    if (foreground && !showPermissionDialog) {
+                        supportViewModel.maybeShowPrompt(
+                            setupComplete = hasPermission && workProfileHandle != null
+                        )
+                    }
+                }
                 Surface {
                     MainScreen(
                         hasPermission = hasPermission,
@@ -61,8 +77,20 @@ class MainActivity : ComponentActivity() {
                         },
                         onShowPermissionDialog = {
                             showPermissionDialog = true
-                        }
+                        },
+                        onSupportDeveloper = { supportViewModel.openDialog() },
                     )
+
+                    if (supportState.dialogVisible) {
+                        SupportDialog(
+                            state = supportState,
+                            onPurchase = { supportViewModel.purchase(this@MainActivity, it) },
+                            onRetry = { supportViewModel.refresh() },
+                            onDismiss = { supportViewModel.dismissDialog() },
+                            onLater = { supportViewModel.remindLater() },
+                            onNeverAsk = { supportViewModel.neverAsk() },
+                        )
+                    }
 
                     if (showPermissionDialog) {
                         PermissionGuideDialog(
@@ -109,6 +137,13 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         updateState()
+        foreground = true
+        supportViewModel.refresh()
+    }
+
+    override fun onPause() {
+        foreground = false
+        super.onPause()
     }
 
     override fun onStart() {

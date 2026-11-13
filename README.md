@@ -40,6 +40,11 @@ permission through it.
    **Disable profile** shortcut.
 3. Make a second routine for the opposite action/time.
 
+## Support development
+
+The main screen includes **Buy the developer a coffee ☕** for optional one-time
+contributions through Google Play. All features remain free.
+
 ## Known limitation
 
 Enabling the profile only happens once the phone is unlocked — there's no way

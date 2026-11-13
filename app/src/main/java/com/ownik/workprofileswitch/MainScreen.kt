@@ -19,9 +19,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -45,10 +49,11 @@ fun MainScreen(
     workProfileEnabled: Boolean,
     onToggleWorkProfile: suspend () -> Unit,
     onShowPermissionDialog: () -> Unit,
+    onSupportDeveloper: () -> Unit,
 ) {
     Scaffold(
         bottomBar = {
-            MainScreenBottomBar()
+            MainScreenBottomBar(onSupportDeveloper = onSupportDeveloper)
         }
     ) { innerPadding ->
         BoxWithConstraints(
@@ -60,10 +65,15 @@ fun MainScreen(
                     vertical = 20.dp
                 ),
         ) {
-            // Offset that puts PowerButton's own center at the center of
-            // the available space, regardless of the state texts' height
-            // below it (they just follow along in the same Column).
-            val buttonTopOffset = ((maxHeight - PowerButtonHeight) / 2).coerceAtLeast(0.dp)
+            // Center the button, but move the controls up in short windows
+            // so their labels remain above the footer.
+            var controlsHeight by remember { mutableIntStateOf(0) }
+            val controlsHeightDp = with(LocalDensity.current) { controlsHeight.toDp() }
+            val centeredOffset = ((maxHeight - PowerButtonHeight) / 2).coerceAtLeast(0.dp)
+            val buttonTopOffset = minOf(
+                centeredOffset,
+                (maxHeight - controlsHeightDp).coerceAtLeast(0.dp),
+            )
 
             // PowerButton stays fixed in place, independent of whether the
             // permission card above is shown.
@@ -71,6 +81,7 @@ fun MainScreen(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
                     .offset(y = buttonTopOffset)
+                    .onSizeChanged { controlsHeight = it.height }
             ) {
                 PowerButton(
                     enabled = workProfileFound && hasPermission,
@@ -146,7 +157,7 @@ fun MainScreen(
 }
 
 @Composable
-fun MainScreenBottomBar() {
+fun MainScreenBottomBar(onSupportDeveloper: () -> Unit) {
     val context = LocalContext.current
     val githubUrl = stringResource(R.string.github_url)
 
@@ -161,6 +172,20 @@ fun MainScreenBottomBar() {
 
     ) {
         HorizontalDivider()
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onSupportDeveloper),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                text = stringResource(R.string.buy_developer_coffee),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
 
         Row(
             modifier = Modifier
@@ -210,6 +235,7 @@ fun MainScreenBottomBar() {
 }
 
 @Preview(showBackground = true)
+@Preview(name = "Short window", widthDp = 960, heightDp = 600, showBackground = true)
 @Composable
 fun MainScreenPreview() {
     WorkProfileSwitchTheme(darkTheme = true) {
@@ -219,6 +245,7 @@ fun MainScreenPreview() {
             workProfileEnabled = false,
             onToggleWorkProfile = {},
             onShowPermissionDialog = {},
+            onSupportDeveloper = {},
         )
     }
 }

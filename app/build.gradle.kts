@@ -63,6 +63,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.play.billing)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.animation)
